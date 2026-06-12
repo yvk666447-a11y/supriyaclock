@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SUPRIYA Love Clock</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+background:radial-gradient(circle,#ff9ecf,#ff4fa3,#d81b60);
+font-family:Arial,sans-serif;
+}
+
+.clock{
+overflow:hidden;
+width:360px;
+height:360px;
+border-radius:50%;
+position:relative;
+
+/* Glass Effect */
+background:rgba(255,255,255,0.12);
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
+
+/* 3D Border */
+border:3px solid rgba(255,255,255,0.35);
+
+/* Premium Glow */
+box-shadow:
+0 8px 32px rgba(255,20,147,0.35),
+inset 0 2px 8px rgba(255,255,255,0.6),
+inset 0 -6px 12px rgba(0,0,0,0.15),
+0 0 25px rgba(255,105,180,0.8);
+
+/* 3D Feel */
+transform-style:preserve-3d;
+}
+ 
+.clock::before{
+content:"";
+position:absolute;
+top:10px;
+left:10px;
+right:10px;
+bottom:10px;
+border-radius:50%;
+border:2px solid rgba(255,255,255,0.25);
+pointer-events:none;
+}
+
+.clock::after{
+content:"";
+position:absolute;
+top:18px;
+left:18px;
+width:120px;
+height:60px;
+border-radius:50%;
+background:rgba(255,255,255,0.25);
+filter:blur(8px);
+transform:rotate(-25deg);
+pointer-events:none;
+}
+  .clockGlow{
+position:absolute;
+top:-8px;
+left:-8px;
+width:calc(100% + 16px);
+height:calc(100% + 16px);
+border-radius:50%;
+pointer-events:none;
+background:conic-gradient(
+from 0deg,
+transparent,
+#ff69b4,
+#ff1493,
+transparent
+);
+animation:rotateGlow 8s linear infinite;
+opacity:0.8;
+}
+
+@keyframes rotateGlow{
+from{
+transform:rotate(0deg);
+}
+to{
+transform:rotate(360deg);
+}
+}
+.heartHub{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:90px;
+color:#ff1493;
+opacity:0.35;
+z-index:1;
+
+animation:heartPulse 1.5s ease-in-out infinite;
+
+text-shadow:
+0 0 10px #ff69b4,
+0 0 25px #ff1493,
+0 0 40px #ff1493;
+}
+
+@keyframes heartPulse{
+0%{
+transform:translate(-50%,-50%) scale(1);
+filter:brightness(1);
+}
+50%{
+transform:translate(-50%,-50%) scale(1.4);
+filter:brightness(1.6);
+}
+100%{
+transform:translate(-50%,-50%) scale(1);
+filter:brightness(1);
+}
+}
+.floatingHeart{
+position:absolute;
+color:#ff4fa3;
+font-size:18px;
+pointer-events:none;
+animation:floatUp 6s linear infinite;
+opacity:0.8;
+z-index:2;
+}
+
+@keyframes floatUp{
+0%{
+transform:translateY(0) scale(1);
+opacity:0.8;
+}
+100%{
+transform:translateY(-300px) scale(1.8);
+opacity:0;
+}
+}
+.centerText{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+
+font-size:48px;
+font-weight:900;
+letter-spacing:4px;
+
+color:#ff2e8a;
+
+/* premium gradient text */
+background:linear-gradient(
+    45deg,
+    #ffffff,
+    #ff4fa3,
+    #ff1493,
+    #ffffff
+);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+/* luxury glow */
+text-shadow:
+0 0 10px rgba(255,255,255,0.2),
+0 0 25px rgba(255,20,147,0.6),
+0 0 45px rgba(255,105,180,0.4);
+
+/* slight floating effect */
+animation:luxText 3s ease-in-out infinite;
+
+z-index:5;
+}
+
+
+.num{
+position:absolute;
+width:70px;
+text-align:center;
+
+font-size:32px;
+font-weight:900;
+color:#fff;
+
+text-shadow:
+1px 1px 0 #ff1493,
+2px 2px 0 #ff1493,
+3px 3px 0 #ff1493,
+4px 4px 8px rgba(0,0,0,.4);
+
+transform:translate(-50%,-50%);
+}
+
+.num span{
+display:block;
+font-size:11px;
+font-weight:normal;
+}
+
+.heart{
+display:inline-block;
+transform-origin:center;
+}
+
+.beat{
+animation:heartBeat 0.5s ease;
+}
+
+@keyframes heartBeat{
+0%{transform:scale(1);}
+50%{transform:scale(1.8);}
+100%{transform:scale(1);}
+}
+
+.hand{
+position:absolute;
+left:50%;
+bottom:50%;
+transform-origin:bottom;
+border-radius:10px;
+z-index:50;
+}
+
+.hour{
+width:7px;
+height:80px;
+background:red;
+box-shadow:0 0 10px rgba(255,255,255,0.4);
+}
+
+.minute{
+width:5px;
+height:110px;
+background:red;
+box-shadow:0 0 10px rgba(255,255,255,0.4);
+}
+
+.second{
+width:2px;
+height:130px;
+background:red;
+box-shadow:0 0 10px rgba(255,255,255,0.4);
+}
+.dot{
+position:absolute;
+top:50%;
+left:50%;
+width:15px;
+height:15px;
+background:white;
+border-radius:50%;
+transform:translate(-50%,-50%);
+z-index:100;
+}
+
+.flower{
+position:absolute;
+font-size:18px;
+pointer-events:none;
+animation:fall linear infinite;
+z-index:2;
+}
+
+@keyframes fall{
+0%{
+transform:translateY(-15px) rotate(0deg);
+opacity:1;
+}
+100%{
+transform:translateY(280px) rotate(360deg);
+opacity:0.8;
+}
+}
+.bgImage{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+border-radius:50%;
+object-fit:cover;
+opacity:0.25;
+z-index:0;
+}
+.dateText{
+position:absolute;
+top:62%;
+left:50%;
+transform:translateX(-50%);
+
+font-size:15px;
+font-weight:900;
+letter-spacing:2px;
+
+background:linear-gradient(
+45deg,
+#ffffff,
+#ffb6d9,
+#ff4fa3,
+#ff1493,
+#ffffff
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+text-shadow:
+0 0 8px rgba(255,255,255,0.5),
+0 0 15px rgba(255,105,180,0.8),
+0 0 25px rgba(255,20,147,0.7);
+
+animation:dateGlow 2s ease-in-out infinite;
+
+z-index:5;
+}
+
+@keyframes dateGlow{
+0%,100%{
+transform:translateX(-50%) scale(1);
+filter:brightness(1);
+}
+50%{
+transform:translateX(-50%) scale(1.08);
+filter:brightness(1.4);
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="clock" id="clock">
+<img src="photo.jpg.webp" class="bgImage">
+<div class="clockGlow"></div>
+<div class="heartHub">❤</div>
+<div class="centerText">SUPRIYA</div>
+<div id="secretMsg" style="
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.7);
+color:white;
+padding:15px 20px;
+border-radius:12px;
+font-size:18px;
+display:none;
+z-index:999;
+text-align:center;
+">
+I MISS YOU 💖 KANAK
+</div>
+
+<div class="hand hour" id="hour"></div>
+<div class="hand minute" id="minute"></div>
+<div class="hand second" id="second"></div>
+
+<div class="dot"></div>
+ <div class="dateText" id="dateText"></div>
+
+</div>
+
+<script>
+
+const clock=document.getElementById("clock");
+
+for(let i=1;i<=12;i++){
+
+let d=document.createElement("div");
+d.className="num";
+
+let angle=(i*30-90)*Math.PI/180;
+let r = 130;
+
+let center = 180;
+
+let x = center + Math.cos(angle) * r;
+let y = center + Math.sin(angle) * r;
+
+d.style.left = x + "px";
+d.style.top = y + "px";
+d.style.transform = "translate(-50%,-50%)";
+
+
+d.innerHTML=
+i+
+'<span><span class="heart">❤️</span> Kanak</span>';
+
+clock.appendChild(d);
+}
+let lastHour = -1;
+function updateClock(){
+
+const now=new Date();
+
+const options = {
+weekday: 'short',
+day: 'numeric',
+month: 'short',
+year: 'numeric'
+};
+
+document.getElementById("dateText").innerHTML =
+now.toLocaleDateString('en-IN', options);
+
+const s=now.getSeconds();
+const m=now.getMinutes();
+const h=now.getHours()%12;
+const currentHour = new Date().getHours();
+
+if (currentHour !== lastHour) {
+    lastHour = currentHour;
+
+    let alarm = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
+    alarm.play();
+
+    setTimeout(() => {
+        alert("💖 I MISS YOU KANAK 💖");
+    }, 500);
+}
+const hour = new Date().getHours();
+const hourColors = [
+"#ff4fa3", "#ff1493", "#ff6b6b", "#ffa502",
+"#2ed573", "#1e90ff", "#3742fa", "#a55eea",
+"#ff4757", "#00d2d3", "#ff9f1a", "#70a1ff"
+];
+
+const color = hourColors[hour % 12];
+clock.style.boxShadow =
+`0 0 40px ${color}, 0 0 80px ${color}55, inset 0 0 20px rgba(255,255,255,0.1)`;
+
+document.body.style.background =
+`radial-gradient(circle, ${color}, #111)`;
+const hearts = document.querySelectorAll(".heart");
+
+hearts.forEach(h=>{
+    h.classList.remove("beat");
+
+    setTimeout(()=>{
+        h.classList.add("beat");
+    },10);
+});
+document.getElementById("second").style.transform=
+`translateX(-50%) rotate(${s*6}deg)`;
+
+document.getElementById("minute").style.transform=
+`translateX(-50%) rotate(${m*6+s*0.1}deg)`;
+
+document.getElementById("hour").style.transform=
+`translateX(-50%) rotate(${h*30+m*0.5}deg)`;
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+for(let i=0;i<25;i++){
+
+let f=document.createElement("div");
+f.className="flower";
+f.innerHTML="🌸";
+
+f.style.left=Math.random()*320+"px";
+f.style.top="-30px";
+
+f.style.animationDuration=
+(4+Math.random()*6)+"s";
+
+f.style.animationDelay=
+Math.random()*5+"s";
+
+clock.appendChild(f);
+}
+for(let i=0;i<15;i++){
+let h=document.createElement("div");
+h.className="floatingHeart";
+h.innerHTML="💖";
+
+h.style.left=Math.random()*360+"px";
+h.style.top=360+"px";
+
+h.style.animationDuration=(3+Math.random()*4)+"s";
+h.style.animationDelay=Math.random()*5+"s";
+
+clock.appendChild(h);
+}
+let tapCount = 0;
+
+document.getElementById("clock").addEventListener("click", () => {
+    tapCount++;
+
+    setTimeout(() => tapCount = 0, 1500);
+
+    if (tapCount === 3) {
+        let msg = document.getElementById("secretMsg");
+        msg.style.display = "block";
+
+        setTimeout(() => {
+            msg.style.display = "none";
+        }, 3000);
+
+        tapCount = 0;
+    }
+});
+</script>
+
+</body>
+</html>
+  
